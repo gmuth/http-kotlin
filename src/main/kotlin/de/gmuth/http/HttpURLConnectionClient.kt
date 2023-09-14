@@ -7,24 +7,18 @@ package de.gmuth.http
 import java.io.OutputStream
 import java.net.HttpURLConnection
 import java.net.URI
-import java.util.logging.Level
-import java.util.logging.Logger.getLogger
 import javax.net.ssl.HostnameVerifier
 import javax.net.ssl.HttpsURLConnection
 
 class HttpURLConnectionClient(config: Config = Config()) : HttpClient(config) {
 
-    val log = getLogger(javaClass.name)
-
-    init {
-        log.fine { "HttpURLConnectionClient created" }
-        if (config.debugLogging) {
-            getLogger("sun.net.www.protocol.http.HttpURLConnection").level = Level.FINER
-        }
-    }
+    // for debugging: sun.net.www.protocol.http.HttpURLConnection
 
     override fun post(
-        uri: URI, contentType: String, writeContent: (OutputStream) -> Unit, chunked: Boolean
+        uri: URI,
+        contentType: String,
+        writeContent: (OutputStream) -> Unit,
+        chunked: Boolean
     ): Response {
         with(uri.toURL().openConnection() as HttpURLConnection) {
             if (this is HttpsURLConnection && config.sslContext != null) {

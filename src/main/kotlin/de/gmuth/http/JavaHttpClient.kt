@@ -13,27 +13,10 @@ import java.net.http.HttpRequest
 import java.net.http.HttpRequest.BodyPublishers
 import java.net.http.HttpResponse.BodyHandlers
 import java.time.Duration
-import java.util.logging.Level
-import java.util.logging.Logger.getLogger
 
-// requires Java >=11
 class JavaHttpClient(config: Config = Config()) : HttpClient(config) {
 
-    companion object {
-        val log = getLogger(JavaHttpClient::javaClass.name)
-        fun isSupported() = try {
-            java.net.http.HttpClient.newHttpClient()
-            true
-        } catch (exception: ClassNotFoundException) {
-            log.log(Level.FINER, exception, { "HttpClient not found" })
-            false
-        }.apply {
-            log.fine { "Java HttpClient supported: $this" }
-        }
-    }
-
     init {
-        log.fine { "JavaHttpClient created" }
         if (!config.verifySSLHostname)
             setProperty("jdk.internal.httpclient.disableHostnameVerification", true.toString())
     }
