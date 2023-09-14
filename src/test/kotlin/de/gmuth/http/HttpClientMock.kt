@@ -10,7 +10,7 @@ import java.io.OutputStream
 import java.net.URI
 import java.util.logging.Logger.getLogger
 
-class HttpClientMock(config: Config = Config()) : HttpClient(config) {
+open class HttpClientMock(config: Config = Config()) : HttpClient(config) {
 
     val log = getLogger(javaClass.name)
     lateinit var rawRequest: ByteArray
@@ -42,6 +42,6 @@ class HttpClientMock(config: Config = Config()) : HttpClient(config) {
                 writeContent(this)
                 toByteArray()
             }
-            log.info { "post ${rawRequest.size} bytes ipp request to $uri -> response '$server', $status, ${this.contentType}" }
+            log.info { "post ${rawRequest.size} bytes to $uri -> response '$server', $status, ${this.contentType}" }
         }
 }
